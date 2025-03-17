@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
         // Kontrollerar lösenord.
         const isPasswordMatch = await user.comparePassword(password);
         if (!isPasswordMatch) {
-            return res.status(401).json({ error: "Felaktigt användarnamn eller lösenord" });
+            return res.status(401).json({ error: "Felaktigt användarnamn eller lösenord. Prova igen!" });
         } else {
             // Skapar JWT-nyckel (och skickar med användar-ID för användning).
             const payload = { username: username, id: user._id };
