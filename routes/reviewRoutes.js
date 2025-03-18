@@ -104,9 +104,9 @@ router.get("/reviews/movie/:movieId", async (req, res) => {
         // Hämtar alla recensioner för filmen och inkluderar användarnamn från "userId".
         let result = await Review.find({ movieId }).populate("userId", "username");
 
-        // Om inga recensioner finns för filmen, skickas det tillbaka ett meddelande.
+        // Om inga recensioner finns för filmen, skickas det tillbaka en tom array.
         if (result.length === 0) {
-            return res.status(200).json({ message: "Inga recensioner hittades." });
+            return res.status(200).json([]);
         } else {
             // Om recensioner finns, returneras dessa.
             return res.json(result);
