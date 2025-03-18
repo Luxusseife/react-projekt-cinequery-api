@@ -35,15 +35,25 @@ router.get("/reviews/:id", async (req, res) => {
     }
 });
 
-// Hämtar alla lagrade recensioner oavsett författare.
+// Dynamisk route som kan hämta alla lagrade recensioner oavsett författare, hämta recensioner för viss film samt 
+// recensioner för en viss film från en viss användare.
 router.get("/reviews", async (req, res) => {
     try {
-        // Hämtar in recensioner.
-        let result = await Review.find({});
 
-        // Kontroll av innehåll och meddelande om collection är tom. Resursen finns men är tom!
+        // Hämtar query-parametrar.
+        const { userId, movieId } = req.query;
+
+        // Dynamiskt filter-objekt.
+        let filter = {};
+        if (userId) filter.userId = userId;
+        if (movieId) filter.movieId = movieId;
+        
+        // Hämtar in recensioner.
+        let result = await Review.find(filter);
+
+        // Kontroll av innehåll och en tom array om collection är tom. Resursen finns men är tom!
         if (result.length === 0) {
-           return res.status(200).json({ message: "Inga recensioner hittades." });
+           return res.status(200).json([]);
 
             // Om recensioner finns, skrivs dessa ut.
         } else {
