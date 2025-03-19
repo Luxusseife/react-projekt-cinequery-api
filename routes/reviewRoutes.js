@@ -70,11 +70,12 @@ router.post("/reviews", authenticateToken, async (req, res) => {
     try {
 
         // Hämtar data från body/inputfält.
-        const { movieId, rating, reviewText } = req.body;
+        const { movieId, movieTitle, rating, reviewText } = req.body;
 
         // Skapar en recension kopplad till den inloggade användaren.
         const review = new Review({
             movieId,
+            movieTitle,
             userId: req.user.id,
             rating,
             reviewText
