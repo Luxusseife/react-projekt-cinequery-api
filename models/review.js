@@ -7,6 +7,10 @@ const reviewSchema = new mongoose.Schema({
         type: String, 
         required: [true, "Filmens ID krävs."]
     },
+    movieTitle: {
+        type: String,
+        required: [true, "Filmtitel krävs."]
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User',
