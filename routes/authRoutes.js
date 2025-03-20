@@ -4,8 +4,9 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("../authMiddleware");
 
-// Importerar användarmodellen.
+// Importerar användarmodellen och recensionsmodellen.
 const User = require("../models/user");
+const Review = require("../models/review");
 
 // Skapar/registrerar en ny användare.
 router.post("/register", async (req, res) => {
@@ -99,9 +100,12 @@ router.delete("/delete/:username", authenticateToken, async (req, res) => {
         // Raderar användaren.
         await user.deleteOne();
 
+        // Raderar alla användarens recensioner.
+        await Review.deleteMany({ userId: user._id });
+
         // Returnerar lyckat svar i konsollen.
         res.status(200).json({
-            message: "Användarkontot är raderat!",
+            message: "Användarkontot samt recensioner kopplade till kontot är raderade!",
             erasedUser: username
         });
         // Felmeddelande vid serverfel.    
