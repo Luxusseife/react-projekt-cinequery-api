@@ -13,7 +13,7 @@ router.get("/api", async (req, res) => {
 router.get("/reviews/:id", async (req, res) => {
 
     // Hämtar recensionens ID från URL:en.
-    const reviewId = req.params.id; 
+    const reviewId = req.params.id;
 
     try {
         // Hämtar recensionen baserat på ID och inkluderar användarnamn från "userId".
@@ -47,22 +47,17 @@ router.get("/reviews", async (req, res) => {
         let filter = {};
         if (userId) filter.userId = userId;
         if (movieId) filter.movieId = movieId;
-        
+
         // Hämtar in recensioner.
-        let result = await Review.find(filter);
+        const result = await Review.find(filter).populate('userId', 'username');
 
-        // Kontroll av innehåll och en tom array om collection är tom. Resursen finns men är tom!
-        if (result.length === 0) {
-           return res.status(200).json([]);
+        // Returnerar resultatet.
+        return res.json(result);
 
-            // Om recensioner finns, skrivs dessa ut.
-        } else {
-            return res.json(result);
-        }
     } catch (error) {
-        // Felmeddelande.
-       return res.status(500).json({ error: "Något gick fel vid hämtning av recensioner: " + error });
-    }
+    // Felmeddelande.
+    return res.status(500).json({ error: "Något gick fel vid hämtning av recensioner: " + error });
+}
 });
 
 // Skapar/lagrar en recension (användare måste vara inloggad!).
