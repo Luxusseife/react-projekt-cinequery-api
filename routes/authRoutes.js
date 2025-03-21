@@ -97,11 +97,11 @@ router.delete("/delete/:username", authenticateToken, async (req, res) => {
             return res.status(401).json({ error: "Felaktigt lösenord." });
         }
 
-        // Raderar användaren.
-        await user.deleteOne();
-
         // Raderar alla användarens recensioner.
         await Review.deleteMany({ userId: user._id });
+
+        // Raderar användaren.
+        await user.deleteOne();
 
         // Returnerar lyckat svar i konsollen.
         res.status(200).json({
