@@ -6,7 +6,6 @@ const { authenticateToken } = require("../authMiddleware");
 
 // Importerar användarmodellen och recensionsmodellen.
 const User = require("../models/user");
-const Review = require("../models/review");
 
 // Skapar/registrerar en ny användare.
 router.post("/register", async (req, res) => {
@@ -97,16 +96,12 @@ router.delete("/delete/:username", authenticateToken, async (req, res) => {
             return res.status(401).json({ error: "Felaktigt lösenord." });
         }
 
-        // Raderar alla användarens recensioner.
-        console.log(`Raderar recensioner av användare med ID: ${user._id}`);
-        const deleteResult = await Review.deleteMany({ userId: user._id.toString() });
-
         // Raderar användaren.
         await user.deleteOne();
 
         // Returnerar lyckat svar i konsollen.
         res.status(200).json({
-            message: "Användarkontot samt recensioner kopplade till kontot är raderade!",
+            message: "Användarkontot är raderat!",
             erasedUser: username
         });
         // Felmeddelande vid serverfel.    

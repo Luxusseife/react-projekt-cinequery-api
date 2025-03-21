@@ -55,9 +55,9 @@ router.get("/reviews", async (req, res) => {
         return res.json(result);
 
     } catch (error) {
-    // Felmeddelande.
-    return res.status(500).json({ error: "Något gick fel vid hämtning av recensioner: " + error });
-}
+        // Felmeddelande.
+        return res.status(500).json({ error: "Något gick fel vid hämtning av recensioner: " + error });
+    }
 });
 
 // Skapar/lagrar en recension (användare måste vara inloggad!).
