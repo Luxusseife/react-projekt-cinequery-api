@@ -98,7 +98,8 @@ router.delete("/delete/:username", authenticateToken, async (req, res) => {
         }
 
         // Raderar alla användarens recensioner.
-        await Review.deleteMany({ userId: user._id });
+        console.log(`Raderar recensioner av användare med ID: ${user._id}`);
+        const deleteResult = await Review.deleteMany({ userId: user._id.toString() });
 
         // Raderar användaren.
         await user.deleteOne();
