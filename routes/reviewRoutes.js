@@ -95,29 +95,6 @@ router.post("/reviews", authenticateToken, async (req, res) => {
     }
 });
 
-// Hämtar recensioner för en specifik film baserat på filmens ID.
-router.get("/reviews/movie/:movieId", async (req, res) => {
-    
-    // Hämtar filmens ID från URL:en.
-    const movieId = req.params.movieId; 
-
-    try {
-        // Hämtar alla recensioner för filmen och inkluderar användarnamn från "userId".
-        let result = await Review.find({ movieId }).populate("userId", "username");
-
-        // Om inga recensioner finns för filmen, skickas det tillbaka en tom array.
-        if (result.length === 0) {
-            return res.status(200).json([]);
-        } else {
-            // Om recensioner finns, returneras dessa.
-            return res.json(result);
-        }
-    } catch (error) {
-        // Felmeddelande.
-        return res.status(500).json({ error: "Något gick fel vid hämtning av recensioner: " + error });
-    }
-});
-
 // Uppdaterar en recension (användare måste vara inloggad och ha skrivit recensionen!).
 router.put("/reviews/:id", authenticateToken, async (req, res) => {
 
